@@ -2,9 +2,10 @@
 import random
 import matplotlib.pyplot as plt
 
+print("~~~~Моделювання радіоактивного розпаду~~~~")
 # вхідні данні
-default_num_of_series = 16  # кількість серій
-default_num_of_coins = 32  # 2048 = кількість монет
+default_num_of_coins = int(input('Введіть к-сть "ядер" (наприклад 256): '))  # 2048 = кількість монет
+default_num_of_series = int(input("Введіть к-сть графіків (наприклад 3): "))
 default_max_num_of_iterations = 8  # максимальна кількість кидків
 
 def get_points(graph=[[],[]],amount_of_coins=default_num_of_coins, heads=0, depth=0):
@@ -56,9 +57,11 @@ plt.xlabel('t')
 plt.ylabel('N') 
   
 # giving a title to my graph 
-plt.title('Radioactive Decay Model by Andrii F.') 
+plt.title('Модель радіоактивного розпаду. Вчитель Ободянський В.В.') 
 
-plt.legend() 
+# show "plots"
+plt.legend()
+plt.gcf().canvas.set_window_title("radioactive decay. "+str(default_num_of_series)+" series of "+'{}'.format(default_num_of_coins)+' nuclei')
 
 # function to show the plot 
 plt.show() 
