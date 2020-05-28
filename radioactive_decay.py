@@ -2,11 +2,14 @@
 import random
 import matplotlib.pyplot as plt
 
-print("~~~~Моделювання радіоактивного розпаду~~~~")
+print("~~~~~~Моделювання радіоактивного розпаду~~~~~~")
 # вхідні данні
 default_num_of_coins = int(input('Введіть к-сть "ядер" (наприклад 256): '))  # 2048 = кількість монет
 default_num_of_series = int(input("Введіть к-сть графіків (наприклад 3): "))
-default_max_num_of_iterations = 8  # максимальна кількість кидків
+default_max_num_of_iterations = 16  # максимальна кількість кидків
+
+
+many_series = default_num_of_series > 8
 
 def get_points(graph=[[],[]],amount_of_coins=default_num_of_coins, heads=0, depth=0):
     # X-и
@@ -16,7 +19,8 @@ def get_points(graph=[[],[]],amount_of_coins=default_num_of_coins, heads=0, dept
     graph[1].append(amount_of_coins)
 
     # надрукувати точки в консоль
-    print("#" + str(depth), "\tInitial(N):", amount_of_coins, "\t\tDecayed(N'):", heads)
+    if not many_series:
+        print("#" + str(depth), "\tInitial(N):", amount_of_coins, "\t\tDecayed(N'):", heads)
 
 
     # якщо мало монет, або вже зробили 8 кидків
@@ -35,12 +39,19 @@ def get_points(graph=[[],[]],amount_of_coins=default_num_of_coins, heads=0, dept
     # але даємо нові вхідні данні
     return get_points(graph=graph, amount_of_coins=tails, heads=samples.count(1), depth=depth + 1)
     
+def decor():
+    def wrap(series_index):
+        print("Loading series #{}".format(series_index+1))
+        return get_points(graph=[[],[]])
+    return wrap
+
+decorated = decor()
+
 
 # для кожної серії викликати функцію get_points, яка підкине монетки,
 # порахує координати для графіка
-series=[(get_points(graph=[[],[]])) for i in range(default_num_of_series)]
-print(series)
-
+series=[(decorated(i)) for i in range(default_num_of_series)]
+#print(series)
 # для кожної серії побудувати графік на основі порахованих координат
 for i in range(len(series)):
     # x axis values 
@@ -48,7 +59,7 @@ for i in range(len(series)):
     # corresponding y axis values 
     y = series[i][1]
   
-    # plotting the points  
+    # plotting the points
     plt.plot(x, y, label='серія '+str(i+1)) 
   
 # naming the x axis 
@@ -60,7 +71,10 @@ plt.ylabel('N')
 plt.title('Модель радіоактивного розпаду. Вчитель Ободянський В.В.') 
 
 # show "plots"
-plt.legend()
+if not many_series:
+    plt.legend()
+    
+# dynamic windows title
 plt.gcf().canvas.set_window_title("radioactive decay. "+str(default_num_of_series)+" series of "+'{}'.format(default_num_of_coins)+' nuclei')
 
 # function to show the plot 
