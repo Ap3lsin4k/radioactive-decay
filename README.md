@@ -13,4 +13,4 @@ If the world is not perfect. Why should half-life plots be?
 
 ![](readme-images/RadioactiveDecay_32series.png)
 
-![](readme-images/RadioactiveDecay_300series.png)
+![](readme-images/RadioactiveDecay_3series.png)
